@@ -4,8 +4,13 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 
+const connectionDB = require('./db')
+
 // inicializamos la app
 const app = express()
+
+// llamamos a la conexion DB
+connectionDB()
 
 // middleware
 app.use(express.json({ extended: true }))
