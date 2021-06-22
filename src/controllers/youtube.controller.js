@@ -1,5 +1,7 @@
 const youtubeModel = require('../models/youtube.model')
 const cloudinary = require('../utils/cloudinary')
+const { pagination } = require('../utils/pagination')
+const { resController } = require('../utils/res')
 
 exports.createVideo = async (req, res) => {
 	try {
@@ -18,9 +20,21 @@ exports.createVideo = async (req, res) => {
 		// registramos el video
 		await video.save()
 
-		res.status(200).json(video)
+		resController(res, 200, video)
 	} catch (error) {
-		console.log(error.message)
-		res.status(500).json({ errors: 'Error en el servidor' })
+		resController(res, 500, { error: true, message: 'Error en el servidor' })
+	}
+}
+
+exports.getVideos = async (req, res) => {
+	try {
+		let videos = await youtubeModel.paginate(
+			{},
+			{ ...pagination, sort: { createdAt: -1 } }
+		)
+
+		resController(res, 200, videos)
+	} catch (error) {
+		resController(res, 500, { error: true, message: 'Error en el servidor' })
 	}
 }

@@ -1,5 +1,5 @@
 const express = require('express')
-const { createVideo } = require('../controllers/youtube.controller')
+const { createVideo, getVideos } = require('../controllers/youtube.controller')
 const { multerImage } = require('../utils/multer')
 
 const router = express.Router()
@@ -9,8 +9,6 @@ const router = express.Router()
 // crear un nuevo video
 router.post('/', multerImage.single('imageVideo'), createVideo)
 
-router.get('/', (req, res) => {
-	res.send({ message: 'si funciona la ruta' })
-})
+router.get('/', getVideos)
 
 module.exports = router

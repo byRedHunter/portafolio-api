@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const YoutubeSchema = mongoose.Schema({
 	title: {
@@ -27,6 +28,13 @@ const YoutubeSchema = mongoose.Schema({
 		required: true,
 		trim: true,
 	},
+	createdAt: {
+		type: Date,
+		required: true,
+		default: Date.now,
+	},
 })
+
+YoutubeSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Youtube', YoutubeSchema)
