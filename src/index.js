@@ -19,9 +19,7 @@ app.use(cors())
 app.use(morgan('dev'))
 
 // rutas
-app.use('/', (req, res) => {
-	res.send({ msg: 'Funciona OK' })
-})
+app.use('/api/youtube', require('./routes/youtube.route'))
 
 // iniciamos el server
 app.listen(process.env.PORT, () => {
