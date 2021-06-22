@@ -22,19 +22,19 @@ exports.createVideo = async (req, res) => {
 
 		resController(res, 200, video)
 	} catch (error) {
-		resController(res, 500, { error: true, message: 'Error en el servidor' })
+		resController(res)
 	}
 }
 
 exports.getVideos = async (req, res) => {
 	try {
-		let videos = await youtubeModel.paginate(
+		const videos = await youtubeModel.paginate(
 			{},
 			{ ...pagination, sort: { createdAt: -1 } }
 		)
 
 		resController(res, 200, videos)
 	} catch (error) {
-		resController(res, 500, { error: true, message: 'Error en el servidor' })
+		resController(res)
 	}
 }

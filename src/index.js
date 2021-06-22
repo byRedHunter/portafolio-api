@@ -20,6 +20,7 @@ app.use(morgan('dev'))
 
 // rutas
 app.use('/api/youtube', require('./routes/youtube.route'))
+app.use('/api/badge', require('./routes/badge.route'))
 
 // iniciamos el server
 app.listen(process.env.PORT, () => {
