@@ -28,9 +28,12 @@ exports.createVideo = async (req, res) => {
 
 exports.getVideos = async (req, res) => {
 	try {
+		const limit = parseInt(req.query.limit, 10) || pagination.limit
+		const page = parseInt(req.query.page, 10) || pagination.page
+
 		const videos = await youtubeModel.paginate(
 			{},
-			{ ...pagination, sort: { createdAt: -1 } }
+			{ limit, page, sort: { createdAt: -1 } }
 		)
 
 		resController(res, 200, videos)
