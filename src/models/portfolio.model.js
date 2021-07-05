@@ -7,7 +7,8 @@ const PortfolioSchema = mongoose.Schema({
 		required: true,
 		trim: true,
 	},
-	badges: [mongoose.Types.ObjectId],
+	//badges: [mongoose.Types.ObjectId],
+	badges: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Badge' }],
 	desc: {
 		type: String,
 		required: true,
