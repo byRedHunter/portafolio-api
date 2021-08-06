@@ -48,7 +48,7 @@ exports.getVideoById = async (req, res) => {
 
 		resController(res, 200, video)
 	} catch (error) {
-		resController(res)
+		resController(res, 500, { message: 'El video seleccionado no existe' })
 	}
 }
 
@@ -106,5 +106,18 @@ exports.editVideoImage = async (req, res) => {
 		resController(res, 500, {
 			message: 'Error al actualizar la imagen del video.',
 		})
+	}
+}
+
+exports.deleteVideo = async (req, res) => {
+	try {
+		const video = await youtubeModel.findById(req.params.id)
+		await cloudinary.uploader.destroy(video.cloudinaryId)
+		await video.remove()
+
+		resController(res, 200, { message: 'Video eliminado' })
+	} catch (error) {
+		console.log(error)
+		resController(res, 500, { message: 'El video seleccionado no existe' })
 	}
 }

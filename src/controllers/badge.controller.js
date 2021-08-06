@@ -7,7 +7,7 @@ exports.createBadge = async (req, res) => {
 
 		// existe este badge
 		const badgeExist = await badgeModel.findOne({ title })
-		if (badgeExist.title === title)
+		if (badgeExist?.title === title)
 			return resController(res, 400, { message: 'Badge ya existe' })
 
 		const badge = new badgeModel({ title })
@@ -15,6 +15,7 @@ exports.createBadge = async (req, res) => {
 
 		resController(res, 200, badge)
 	} catch (error) {
+		console.log(error)
 		resController(res, 500, { message: 'Error al registrar.' })
 	}
 }
