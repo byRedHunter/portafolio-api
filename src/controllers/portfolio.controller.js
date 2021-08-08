@@ -50,3 +50,75 @@ exports.getWorks = async (req, res) => {
 		resController(res)
 	}
 }
+
+exports.getWorkById = async (req, res) => {
+	try {
+		const work = await portfolioModel.findById(req.params.id)
+
+		resController(res, 200, work)
+	} catch (error) {
+		resController(res, 500, { message: 'El proyecto seleccionado no existe' })
+	}
+}
+
+exports.editWork = async (req, res) => {
+	try {
+		const idToEdit = req.params.id
+
+		const work = await portfolioModel.findById(idToEdit)
+
+		if (!work)
+			return resController(res, 400, { message: 'No existe el proyecto.' })
+
+		const newWork = await portfolioModel.findByIdAndUpdate(idToEdit, req.body, {
+			new: true,
+		})
+
+		resController(res, 200, newWork)
+	} catch (error) {
+		console.log(error)
+		resController(res, 500, { message: 'Error al actualizar los datos.' })
+	}
+}
+
+exports.editWorkImage = async (req, res) => {
+	try {
+		// obtenemos los datos de la DB del video a editar
+		const work = await portfolioModel.findById(req.params.id)
+		// eliminamos el archivo en cloudinary
+		await cloudinary.uploader.destroy(work.cloudinaryId)
+		// subimos la nueva imagen
+		const uploadImage = await cloudinary.uploader.upload(req.file.path)
+
+		const data = {
+			image: uploadImage.secure_url,
+			cloudinaryId: uploadImage.public_id,
+		}
+
+		const newWorkImage = await portfolioModel.findByIdAndUpdate(
+			req.params.id,
+			data,
+			{
+				new: true,
+			}
+		)
+
+		resController(res, 200, newWorkImage)
+	} catch (error) {
+		console.log(error)
+		resController(res, 500, { message: 'Error al actualizar los datos.' })
+	}
+}
+
+exports.deleteWork = async (req, res) => {
+	try {
+		const work = await portfolioModel.findById(req.params.id)
+		await cloudinary.uploader.destroy(work.cloudinaryId)
+		await work.remove()
+
+		resController(res, 200, { message: 'Proyecto eliminado' })
+	} catch (error) {
+		console.log(error)
+		resController(res, 500, { message: 'El video seleccionado no existe' })
+	}
+}
