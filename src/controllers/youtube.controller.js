@@ -54,20 +54,12 @@ exports.getVideoById = async (req, res) => {
 
 exports.editVideo = async (req, res) => {
 	try {
-		console.log('id', req.params.id)
-		const { title, desc, link } = req.body
+		const idToEdit = req.params.id
 
 		// obtenemos los datos de la DB del video a editar
-		const video = await youtubeModel.findById(req.params.id)
-		console.log(video)
+		const video = await youtubeModel.findById(idToEdit)
 
-		const data = {
-			title,
-			desc,
-			link,
-		}
-
-		const newVideo = await youtubeModel.findOneAndUpdate(req.params.id, data, {
+		const newVideo = await youtubeModel.findByIdAndUpdate(idToEdit, req.body, {
 			new: true,
 		})
 
@@ -92,7 +84,7 @@ exports.editVideoImage = async (req, res) => {
 			cloudinaryId: uploadImage.public_id,
 		}
 
-		const newVideoImage = await youtubeModel.findOneAndUpdate(
+		const newVideoImage = await youtubeModel.findByIdAndUpdate(
 			req.params.id,
 			data,
 			{
