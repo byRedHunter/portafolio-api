@@ -22,7 +22,7 @@ router.get('/:id', getWorkById)
 
 // editar proyecto
 router.put('/:id', editWork)
-router.put('/image/:id', multerImage, single('imageWork'), editWorkImage)
+router.put('/image/:id', multerImage.single('imageWork'), editWorkImage)
 
 // eliminar proyecto
 router.delete('/:id', deleteWork)
